@@ -1119,10 +1119,23 @@ static const NSTimeInterval kJPControlViewAutoHiddenTimeInterval = 5;
             if(CGPointEqualToPoint(center, CGPointZero)){
                 center = view.center;
             }
-            view.frame = CGRectMake(center.y - bounds.size.width * 0.5,
-                    center.x - bounds.size.height * 0.5,
-                    bounds.size.width,
-                    bounds.size.height);
+//            view.frame = CGRectMake(center.y - bounds.size.width * 0.5,
+//                    center.x - bounds.size.height * 0.5,
+//                    bounds.size.width,
+//                    bounds.size.height);
+            
+            if (!self.isVerticalVideo) {
+                //原来的逻辑
+                view.frame = CGRectMake(center.y - bounds.size.width * 0.5,
+                                        center.x - bounds.size.height * 0.5,
+                                        bounds.size.width,
+                                        bounds.size.height);
+                
+            }else{
+                view.frame = bounds;
+                
+            }
+
         }
     }
     for(UIView *view in self.bufferingIndicatorContainerView.subviews){
@@ -1136,10 +1149,22 @@ static const NSTimeInterval kJPControlViewAutoHiddenTimeInterval = 5;
             if(CGPointEqualToPoint(center, CGPointZero)){
                 center = view.center;
             }
-            view.frame = CGRectMake(center.y - bounds.size.width * 0.5,
-                    center.x - bounds.size.height * 0.5,
-                    bounds.size.width,
-                    bounds.size.height);
+//            view.frame = CGRectMake(center.y - bounds.size.width * 0.5,
+//                    center.x - bounds.size.height * 0.5,
+//                    bounds.size.width,
+//                    bounds.size.height);
+            if (!self.isVerticalVideo) {
+                //原来的逻辑
+                view.frame = CGRectMake(center.y - bounds.size.width * 0.5,
+                                        center.x - bounds.size.height * 0.5,
+                                        bounds.size.width,
+                                        bounds.size.height);
+                
+            }else{
+                view.frame = bounds;
+                
+            }
+
         }
     }
 }
