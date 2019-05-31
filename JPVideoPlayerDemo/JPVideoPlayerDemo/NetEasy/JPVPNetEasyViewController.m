@@ -108,7 +108,7 @@
             @"https://media.w3.org/2010/05/sintel/trailer.mp4",
             @"http://mvvideo2.meitudata.com/576bc2fc91ef22121.mp4",
             @"http://mvvideo10.meitudata.com/5a92ee2fa975d9739_H264_3.mp4",
-            @"http://mvvideo11.meitudata.com/5a44d13c362a23002_H264_11_5.mp4",
+            @"http://mvvideo11.meitudata.com/5a44d13c362a23002_H264_11_5.mp4",//竖屏视频
             @"http://mvvideo10.meitudata.com/572ff691113842657.mp4",
             @"https://api.tuwan.com/apps/Video/play?key=aHR0cHM6Ly92LnFxLmNvbS9pZnJhbWUvcGxheWVyLmh0bWw%2FdmlkPXUwNjk3MmtqNWV6JnRpbnk9MCZhdXRvPTA%3D&aid=381374",
             @"https://api.tuwan.com/apps/Video/play?key=aHR0cHM6Ly92LnFxLmNvbS9pZnJhbWUvcGxheWVyLmh0bWw%2FdmlkPWswNjk2enBud2xvJnRpbnk9MCZhdXRvPTA%3D&aid=381395",

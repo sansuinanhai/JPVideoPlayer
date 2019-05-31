@@ -199,6 +199,9 @@ shouldResumePlaybackFromPlaybackRecordForURL:(NSURL *)videoURL
 
 @property (nonatomic, strong, readonly) JPVideoPlayer *videoPlayer;
 
+
+@property (nonatomic, strong) void (^mintorVideoSizeBlock) (CGSize videoSize);
+
 #pragma mark - Singleton and Initialization
 
 /**

@@ -524,6 +524,12 @@ didReceiveLoadingRequestTask:(JPResourceLoadingRequestWebTask *)requestTask {
                 self.playerStatus = JPVideoPlayerStatusPlaying;
                 [self invokePlayerStatusDidChangeDelegateMethod];
             }
+        }else if ([keyPath isEqualToString:@"presentationSize"]){
+            //拿到尺寸以后,将结果告知到外界
+            CGSize presentationSize = self.playerModel.playerItem.presentationSize;
+            if (self.mintorVideoSizeBlock) {
+                self.mintorVideoSizeBlock(presentationSize);
+            }
         }
     }
 }
@@ -587,6 +593,7 @@ didReceiveLoadingRequestTask:(JPResourceLoadingRequestWebTask *)requestTask {
     [playerItem addObserver:self forKeyPath:@"playbackLikelyToKeepUp" options:NSKeyValueObservingOptionNew context:nil];
     [playerItem addObserver:self forKeyPath:@"playbackBufferEmpty" options:NSKeyValueObservingOptionNew context:nil];
     [playerItem addObserver:self forKeyPath:@"playbackBufferFull" options:NSKeyValueObservingOptionNew context:nil];
+    [playerItem addObserver:self forKeyPath:@"presentationSize" options:NSKeyValueObservingOptionNew context:nil];//新增的对视频尺寸的监控
 
     model.player = [AVPlayer playerWithPlayerItem:playerItem];
     [model.player addObserver:self forKeyPath:@"rate" options:NSKeyValueObservingOptionNew context:nil];

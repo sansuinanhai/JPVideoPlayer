@@ -547,7 +547,10 @@ nearestViewControllerInViewTree:(UIViewController *_Nullable)nearestViewControll
             constrainedRect.size.height - kJPVideoPlayerControlBarHeight,
             constrainedRect.size.width,
             kJPVideoPlayerControlBarHeight);
-    if(interfaceOrientation == JPVideoPlayViewInterfaceOrientationLandscape){ // landscape.
+    
+    JPVideoPlayerView *playView = (JPVideoPlayerView *)self.superview.superview;
+    
+    if(interfaceOrientation == JPVideoPlayViewInterfaceOrientationLandscape&&!playView.isVerticalVideo){ // landscape.
         CGFloat controlBarOriginX = 0;
         if (@available(iOS 11.0, *)) {
             UIEdgeInsets insets = self.window.safeAreaInsets;
@@ -995,36 +998,60 @@ static const NSTimeInterval kJPControlViewAutoHiddenTimeInterval = 5;
 
 - (void)setBounds:(CGRect)bounds {
     [super setBounds:bounds];
-    self.videoContainerView.frame = CGRectMake(self.videoContainerView.center.x - bounds.size.width * 0.5,
-            self.videoContainerView.center.y - bounds.size.height * 0.5,
-            bounds.size.width,
-            bounds.size.height);
+    
+    
+    if (!self.isVerticalVideo) {
+        //之前的逻辑
+        self.videoContainerView.frame = CGRectMake(self.videoContainerView.center.x - bounds.size.width * 0.5,
+                                                   self.videoContainerView.center.y - bounds.size.height * 0.5,
+                                                   bounds.size.width,
+                                                   bounds.size.height);
+        self.userInteractionContainerView.frame = CGRectMake(self.userInteractionContainerView.center.x - bounds.size.width * 0.5,
+                                                             self.userInteractionContainerView.center.y - bounds.size.height * 0.5,
+                                                             bounds.size.width,
+                                                             bounds.size.height - kJPVideoPlayerControlBarHeight);
+
+    }else{
+        self.videoContainerView.frame = self.bounds;
+        self.userInteractionContainerView.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height - kJPVideoPlayerControlBarHeight);
+    }
+
+    
+    
+    
     self.placeholderView.frame = self.videoContainerView.frame;
     self.controlContainerView.frame = self.videoContainerView.frame;
     self.progressContainerView.frame = self.videoContainerView.frame;
     self.bufferingIndicatorContainerView.frame = self.videoContainerView.frame;
-    self.userInteractionContainerView.frame = CGRectMake(self.userInteractionContainerView.center.x - bounds.size.width * 0.5,
-            self.userInteractionContainerView.center.y - bounds.size.height * 0.5,
-            bounds.size.width,
-            bounds.size.height - kJPVideoPlayerControlBarHeight);
     [self layoutContainerSubviewsWithBounds:bounds center:CGPointZero frame:CGRectZero];
     [self callLayoutMethodForContainerSubviews];
 }
 
 - (void)setCenter:(CGPoint)center {
     [super setCenter:center];
-    self.videoContainerView.frame = CGRectMake(center.y - self.videoContainerView.bounds.size.width * 0.5,
-            center.x - self.videoContainerView.bounds.size.height * 0.5,
-            self.videoContainerView.bounds.size.width,
-            self.videoContainerView.bounds.size.height);
+    
+    if (!self.isVerticalVideo) {
+        //原来的逻辑
+        self.videoContainerView.frame = CGRectMake(center.y - self.videoContainerView.bounds.size.width * 0.5,
+                                                   center.x - self.videoContainerView.bounds.size.height * 0.5,
+                                                   self.videoContainerView.bounds.size.width,
+                                                   self.videoContainerView.bounds.size.height);
+        self.userInteractionContainerView.frame = CGRectMake(center.y -  self.userInteractionContainerView.bounds.size.width * 0.5,
+                                                             center.x -  self.userInteractionContainerView.bounds.size.height * 0.5,
+                                                             self.userInteractionContainerView.bounds.size.width,
+                                                             self.userInteractionContainerView.bounds.size.height - kJPVideoPlayerControlBarHeight);
+
+    }else{
+        self.videoContainerView.frame = self.bounds;
+        self.userInteractionContainerView.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height - kJPVideoPlayerControlBarHeight);
+    }
+    
+    
     self.placeholderView.frame = self.videoContainerView.frame;
     self.controlContainerView.frame = self.videoContainerView.frame;
     self.progressContainerView.frame = self.videoContainerView.frame;
     self.bufferingIndicatorContainerView.frame = self.videoContainerView.frame;
-    self.userInteractionContainerView.frame = CGRectMake(center.y -  self.userInteractionContainerView.bounds.size.width * 0.5,
-            center.x -  self.userInteractionContainerView.bounds.size.height * 0.5,
-            self.userInteractionContainerView.bounds.size.width,
-            self.userInteractionContainerView.bounds.size.height - kJPVideoPlayerControlBarHeight);
+
     [self layoutContainerSubviewsWithBounds:CGRectZero center:center frame:CGRectZero];
     [self callLayoutMethodForContainerSubviews];
 }
@@ -1067,10 +1094,18 @@ static const NSTimeInterval kJPControlViewAutoHiddenTimeInterval = 5;
             if(CGPointEqualToPoint(center, CGPointZero)){
                 center = view.center;
             }
-            view.frame = CGRectMake(center.y - bounds.size.width * 0.5,
-                    center.x - bounds.size.height * 0.5,
-                    bounds.size.width,
-                    bounds.size.height);
+            
+            if (!self.isVerticalVideo) {
+                //原来的逻辑
+                view.frame = CGRectMake(center.y - bounds.size.width * 0.5,
+                                        center.x - bounds.size.height * 0.5,
+                                        bounds.size.width,
+                                        bounds.size.height);
+
+            }else{
+                view.frame = bounds;
+
+            }
         }
     }
     for(UIView *view in self.progressContainerView.subviews){

@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
                    'A guarantee that the same URL won\'t be downloaded several times'\
                    'A guarantee that main thread will never be blocked'
 
-  s.homepage     = 'https://github.com/Chris-Pan/JPVideoPlayer'
+  s.homepage     = 'https://github.com/sansuinanhai/JPVideoPlayer.git'
   s.license      = 'MIT'
   s.author             = { 'NewPan' => '13246884282@163.com' }
   # s.platform     = :ios, '8.0'

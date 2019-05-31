@@ -136,6 +136,8 @@ UIKIT_EXTERN const CGFloat JPVideoPlayerProgressViewElementHeight;
  * To control need automatic hide controlView when user touched.
  */
 @property (nonatomic, assign, readonly) BOOL needAutoHideControlViewWhenUserTapping;
+/**是否是竖屏视频 YES是竖屏 NO是横屏*/
+@property (nonatomic, assign) BOOL isVerticalVideo;
 
 - (instancetype)initWithNeedAutoHideControlViewWhenUserTapping:(BOOL)needAutoHideControlViewWhenUserTapping;
 

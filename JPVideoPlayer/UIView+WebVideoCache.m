@@ -35,6 +35,9 @@
 
 @property(nonatomic, copy) NSURL *videoURL;
 
+/**是否是竖屏视频 YES是竖屏 NO是横屏*/
+@property (nonatomic, assign) BOOL isVerticalVideo;
+
 @end
 
 @implementation JPVideoPlayerHelper
@@ -76,6 +79,9 @@
 @end
 
 @implementation UIView (WebVideoCache)
+
+
+
 
 #pragma mark - Properties
 
@@ -279,6 +285,17 @@
     self.jp_videoURL = url;
     if (url) {
         [JPVideoPlayerManager sharedManager].delegate = self;
+        
+        //这里监听一下视频的尺寸
+        __weak typeof(self) weakSelf = self;
+        [JPVideoPlayerManager sharedManager].mintorVideoSizeBlock = ^(CGSize videoSize) {
+            NSLog(@"videoSize = %@",NSStringFromCGSize(videoSize));
+            //拿到视频尺寸
+            weakSelf.helper.isVerticalVideo = videoSize.width < videoSize.height;
+            weakSelf.helper.videoPlayerView.isVerticalVideo = weakSelf.helper.isVerticalVideo;
+        };
+        
+        
         self.helper.viewInterfaceOrientation = JPVideoPlayViewInterfaceOrientationPortrait;
 
         /// handler the reuse of progressView in `UITableView`.
@@ -583,11 +600,33 @@
 - (void)executeLandscape {
     UIView *videoPlayerView = self.helper.videoPlayerView;
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGRect bounds = CGRectMake(0, 0, CGRectGetHeight(screenBounds), CGRectGetWidth(screenBounds));
+    
+    CGRect bounds = CGRectZero;
+    //判断当前是横屏，还是竖屏
+    BOOL isLandscape = screenBounds.size.width > screenBounds.size.height;
+    if (isLandscape) {
+        //判断视频的方向
+        if (self.helper.isVerticalVideo) {
+            bounds = CGRectMake(0, 0, CGRectGetHeight(screenBounds), CGRectGetWidth(screenBounds));
+            videoPlayerView.transform = CGAffineTransformMakeRotation(M_PI_2);
+        }else{
+            bounds = screenBounds;
+        }
+
+    }else{
+        if (self.helper.isVerticalVideo) {
+            bounds = screenBounds;
+        }else{
+            bounds = CGRectMake(0, 0, CGRectGetHeight(screenBounds), CGRectGetWidth(screenBounds));
+            videoPlayerView.transform = CGAffineTransformMakeRotation(M_PI_2);
+        }
+    }
+    
+//    bounds = CGRectMake(0, 0, CGRectGetHeight(screenBounds), CGRectGetWidth(screenBounds));
     CGPoint center = CGPointMake(CGRectGetMidX(screenBounds), CGRectGetMidY(screenBounds));
     videoPlayerView.bounds = bounds;
     videoPlayerView.center = center;
-    videoPlayerView.transform = CGAffineTransformMakeRotation(M_PI_2);
+//    videoPlayerView.transform = CGAffineTransformMakeRotation(M_PI_2);
     [[JPVideoPlayerManager sharedManager] videoPlayer].playerModel.playerLayer.frame = bounds;
 }
 

@@ -105,6 +105,11 @@ static NSString * const JPVideoPlayerSDKVersionKey = @"com.jpvideoplayer.sdk.ver
     return self;
 }
 
+- (void)setMintorVideoSizeBlock:(void (^)(CGSize))mintorVideoSizeBlock
+{
+    //传递监听视频尺寸的回调
+    self.videoPlayer.mintorVideoSizeBlock = mintorVideoSizeBlock;
+}
 
 #pragma mark - Public
 

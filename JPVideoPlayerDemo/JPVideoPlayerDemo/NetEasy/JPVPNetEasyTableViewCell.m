@@ -19,6 +19,10 @@
     else{
         self.videoPlayView.image = [UIImage imageNamed:@"placeholder2"];
     }
+    
+    [self.playButton setImage:nil forState:UIControlStateNormal];
+    [self.playButton setTitle:[NSString stringWithFormat:@"%ld",(long)indexPath.row] forState:UIControlStateNormal];
+    [self.playButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
 }
 
 - (IBAction)playButtonDidClick:(id)sender {

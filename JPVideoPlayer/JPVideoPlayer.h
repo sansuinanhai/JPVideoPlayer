@@ -107,6 +107,9 @@ playFailedWithError:(NSError *)error;
 
 @property (nonatomic, assign, readonly) JPVideoPlayerStatus playerStatus;
 
+@property (nonatomic, strong) void (^mintorVideoSizeBlock) (CGSize videoSize);
+
+
 /**
  * Play the existed video file in disk.
  *
